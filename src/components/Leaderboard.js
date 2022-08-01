@@ -1,6 +1,7 @@
 import Image from "next/image";
 import styled from "styled-components";
 import Button from "../styles/Button";
+import Footer from "./Footer";
 
 const Leaderboard = ({ data, setGameState }) => {
   const sortedByVotes = data.sort((a, b) => b.votes - a.votes);
@@ -10,8 +11,30 @@ const Leaderboard = ({ data, setGameState }) => {
     <StyledLeaderboard>
       <Stage>
         {stageData.map((chara, idx) => (
-          <div key={"s" + chara.id}>
-            <StageImageContainer>
+          <div key={chara.image_id}>
+            <a href={chara.source} target="_blank">
+              <StageImageContainer>
+                <Image
+                  src={chara.url}
+                  alt="character"
+                  layout="fill"
+                  objectFit="cover"
+                  objectPosition="top"
+                  placeholder="blur"
+                  blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0dCusBwADIQFx295xTQAAAABJRU5ErkJggg=="
+                />
+              </StageImageContainer>
+            </a>
+            <StageText>{idx + 1}</StageText>
+          </div>
+        ))}
+      </Stage>
+
+      <ImagesGridHeader>Characters sorted by votes</ImagesGridHeader>
+      <ImagesGrid>
+        {sortedByVotes.map((chara) => (
+          <a href={chara.source} target="_blank" key={chara.image_id}>
+            <ImageContainer>
               <Image
                 src={chara.url}
                 alt="character"
@@ -21,31 +44,15 @@ const Leaderboard = ({ data, setGameState }) => {
                 placeholder="blur"
                 blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0dCusBwADIQFx295xTQAAAABJRU5ErkJggg=="
               />
-            </StageImageContainer>
-            <StageText>{idx + 1}</StageText>
-          </div>
-        ))}
-      </Stage>
-
-      <ImagesGridHeader>Characters sorted by votes</ImagesGridHeader>
-      <ImagesGrid>
-        {sortedByVotes.map((chara) => (
-          <ImageContainer key={"g" + chara.id}>
-            <Image
-              src={chara.url}
-              alt="character"
-              layout="fill"
-              objectFit="cover"
-              objectPosition="top"
-              placeholder="blur"
-              blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0dCusBwADIQFx295xTQAAAABJRU5ErkJggg=="
-            />
-          </ImageContainer>
+            </ImageContainer>
+          </a>
         ))}
       </ImagesGrid>
       <RestartButton onClick={() => setGameState("restart")}>
         Restart
       </RestartButton>
+      <Tip>Click any image for source ;)</Tip>
+      <Footer />
     </StyledLeaderboard>
   );
 };
@@ -64,15 +71,15 @@ const Stage = styled.div`
   justify-items: center;
   gap: 1em;
 
-  div:nth-child(1) > div {
+  div:nth-child(1) > a > div {
     border: 2px solid #fbbf24;
   }
 
-  div:nth-child(2) > div {
+  div:nth-child(2) > a > div {
     border: 2px solid #e2e8f0;
   }
 
-  div:nth-child(3) > div {
+  div:nth-child(3) > a > div {
     border: 2px solid #b45309;
   }
 
@@ -125,8 +132,13 @@ const ImageContainer = styled.div`
 `;
 
 const RestartButton = styled(Button)`
+  color: #000;
   background-color: #fde047;
   font-size: 1.25rem;
   display: block;
   margin: 1em auto;
+`;
+
+const Tip = styled.p`
+  text-align: center;
 `;

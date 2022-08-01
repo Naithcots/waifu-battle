@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import Button from "../styles/Button";
+import Footer from "./Footer";
 
 const Setup = ({ characterAmount, setCharacterAmount, setGameState }) => {
   return (
@@ -15,6 +16,7 @@ const Setup = ({ characterAmount, setCharacterAmount, setGameState }) => {
         <option value="16">20</option>
       </select>
       <StartButton onClick={() => setGameState("play")}>Start</StartButton>
+      <Footer />
     </StyledSetup>
   );
 };

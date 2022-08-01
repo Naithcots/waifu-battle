@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import useFetchImages from "../hooks/useFetchImages";
+// import useFetchImages from "../hooks/useFetchImages";
 import Spinner from "./Spinner";
 import Card from "./Card";
+import { useQuery } from "@tanstack/react-query";
+import getImages from "../queries/getImages";
 
 const CardContainer = ({
   characterAmount,
@@ -10,31 +12,30 @@ const CardContainer = ({
   characters,
   setCharacters,
 }) => {
-  //   const [characters, setCharacters] = useState(null);
   const [firstCard, setFirstCard] = useState(null);
   const [secondCard, setSecondCard] = useState(null);
   const [round, setRound] = useState(1);
-  const { data, loading, error } = useFetchImages(characterAmount);
+  const { error, isLoading, data } = useQuery(["characters"], getImages);
   let overtime = false;
-  //   console.log(data, loading, error);
+  console.log(data, isLoading, error);
 
   const handleChoice = (card) => {
     // Add vote to character
     const charactersWithVote = characters.map((chara) =>
-      chara.id === card.id ? { ...chara, votes: chara.votes + 1 } : chara
+      chara.image_id === card.image_id ? { ...chara, votes: chara.votes + 1 } : chara
     );
     // Add pair to characters
     const newCharacters = charactersWithVote.map((chara) => {
-      if (chara.id === firstCard.id) {
+      if (chara.image_id === firstCard.image_id) {
         return {
           ...chara,
-          pairedWith: [...chara.pairedWith, secondCard.id],
+          pairedWith: [...chara.pairedWith, secondCard.image_id],
           rounds: chara.rounds + 1,
         };
-      } else if (chara.id === secondCard.id) {
+      } else if (chara.image_id === secondCard.image_id) {
         return {
           ...chara,
-          pairedWith: [...chara.pairedWith, firstCard.id],
+          pairedWith: [...chara.pairedWith, firstCard.image_id],
           rounds: chara.rounds + 1,
         };
       } else return chara;
@@ -52,11 +53,11 @@ const CardContainer = ({
     const first = unpaired[0];
     const opponent = unpaired
       .slice(1)
-      .find((chara) => !chara.pairedWith.includes(first.id));
+      .find((chara) => !chara.pairedWith.includes(first.image_id));
 
     if (!opponent) {
       charactersCopy = charactersCopy.map((chara) =>
-        chara.id === first.id
+        chara.image_id === first.image_id
           ? // ? { ...chara, rounds: chara.rounds + 1, votes: chara.votes + 1 }
             { ...chara, rounds: chara.rounds + 1 }
           : chara
@@ -102,16 +103,24 @@ const CardContainer = ({
 
   useEffect(() => {
     if (characters && round > 1) {
-      // console.log("NEXT ROUND");
       nextTurn(characters);
     }
   }, [round]);
 
   useEffect(() => {
-    data && setCharacters(data);
+    if (data) {
+      const charactersSlice = data.slice(0, characterAmount);
+      const newCharacters = charactersSlice.map((chara) => ({
+        ...chara,
+        votes: 0,
+        rounds: 0,
+        pairedWith: [],
+      }));
+      setCharacters(newCharacters);
+    }
   }, [data]);
 
-  if (loading || !firstCard || !secondCard) return <Spinner />;
+  if (isLoading || !firstCard || !secondCard) return <Spinner />;
   if (error) return <div>Error</div>;
   return (
     <StyledCardContainer>
