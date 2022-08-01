@@ -3,7 +3,8 @@ import styled from "styled-components";
 import Button from "../styles/Button";
 
 const Leaderboard = ({ data, setGameState }) => {
-  const stageData = data.slice(0, 3);
+  const sortedByVotes = data.sort((a, b) => b.votes - a.votes);
+  const stageData = sortedByVotes.slice(0, 3);
 
   return (
     <StyledLeaderboard>
@@ -28,7 +29,7 @@ const Leaderboard = ({ data, setGameState }) => {
 
       <ImagesGridHeader>Characters sorted by votes</ImagesGridHeader>
       <ImagesGrid>
-        {data.map((chara) => (
+        {sortedByVotes.map((chara) => (
           <ImageContainer key={"g" + chara.id}>
             <Image
               src={chara.url}

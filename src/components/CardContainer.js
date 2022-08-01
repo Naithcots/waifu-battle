@@ -57,7 +57,8 @@ const CardContainer = ({
     if (!opponent) {
       charactersCopy = charactersCopy.map((chara) =>
         chara.id === first.id
-          ? { ...chara, rounds: chara.rounds + 1, votes: chara.votes + 1 }
+          ? // ? { ...chara, rounds: chara.rounds + 1, votes: chara.votes + 1 }
+            { ...chara, rounds: chara.rounds + 1 }
           : chara
       );
       setCharacters(charactersCopy);

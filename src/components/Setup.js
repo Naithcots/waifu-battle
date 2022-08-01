@@ -9,6 +9,7 @@ const Setup = ({ characterAmount, setCharacterAmount, setGameState }) => {
         onChange={(e) => setCharacterAmount(e.target.value)}
         value={characterAmount}
       >
+        <option value="6">6</option>
         <option value="10">10</option>
         <option value="14">15</option>
         <option value="16">20</option>
