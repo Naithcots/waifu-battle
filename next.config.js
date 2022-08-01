@@ -4,6 +4,6 @@ module.exports = {
     styledComponents: true,
   },
   images: {
-    domains: ["i.waifu.pics"],
+    domains: ["cdn.waifu.im", "waifu.im"],
   },
 };

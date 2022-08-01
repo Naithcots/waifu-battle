@@ -4,15 +4,13 @@ import styled from "styled-components";
 const Card = ({ data, handleChoice }) => {
   return (
     <StyledCard onClick={() => handleChoice(data)}>
-      <ImageContainer>
+      <ImageContainer bg={data.dominant_color}>
         <Image
           src={data.url}
           alt="card"
           layout="fill"
           objectFit="cover"
           objectPosition="top"
-          placeholder="blur"
-          blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0dCusBwADIQFx295xTQAAAABJRU5ErkJggg=="
           style={{ borderRadius: "6px" }}
           priority
         />
@@ -31,6 +29,9 @@ const ImageContainer = styled.div`
 
   max-width: 400px;
   max-height: 400px;
+
+  background-color: ${(props) => props.bg};
+  border-radius: 6px;
 
   cursor: pointer;
   transition: transform 350ms cubic-bezier(0.075, 0.82, 0.165, 1);

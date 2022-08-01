@@ -4,7 +4,7 @@ const Footer = () => {
   return (
     <StyledFooter>
       <Text>
-        Created by{" "}
+        Coded by{" "}
         <GitLink href="https://github.com/Naithcots" target="_blank">
           @naithcots
         </GitLink>
@@ -15,16 +15,10 @@ const Footer = () => {
 export default Footer;
 
 const StyledFooter = styled.footer`
-  /* width: 100%; */
+  width: 100%;
+  padding: 1em 0;
 
-  padding: 0.5em 0;
-
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 1em;
-
-  text-align: right;
+  text-align: center;
 
   color: #fff;
   /* background-color: #e2e8f0; */
