@@ -69,7 +69,7 @@ const Stage = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   justify-items: center;
-  gap: 1em;
+  gap: 0.25em;
 
   div:nth-child(1) > a > div {
     border: 2px solid #fbbf24;
@@ -117,18 +117,18 @@ const ImagesGridHeader = styled.h2`
 `;
 
 const ImagesGrid = styled.div`
-  margin: 2em 1.5rem;
+  margin: 2em 1.5em;
 
   display: grid;
-  grid-template-columns: repeat(auto-fit, 150px);
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: 1em;
-  justify-content: center;
+  justify-items: center;
 `;
 
 const ImageContainer = styled.div`
   position: relative;
   width: 150px;
-  height: 150px;
+  height: 200px;
 `;
 
 const RestartButton = styled(Button)`
@@ -136,7 +136,8 @@ const RestartButton = styled(Button)`
   background-color: #fde047;
   font-size: 1.25rem;
   display: block;
-  margin: 1em auto;
+  margin: 0 auto;
+  margin-top: 2em;
 `;
 
 const Tip = styled.p`

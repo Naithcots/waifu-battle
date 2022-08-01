@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import styled from "styled-components";
-// import useFetchImages from "../hooks/useFetchImages";
+import styled, { keyframes } from "styled-components";
 import Spinner from "./Spinner";
 import Card from "./Card";
 import { useQuery } from "@tanstack/react-query";
@@ -17,12 +16,13 @@ const CardContainer = ({
   const [round, setRound] = useState(1);
   const { error, isLoading, data } = useQuery(["characters"], getImages);
   let overtime = false;
-  console.log(data, isLoading, error);
 
   const handleChoice = (card) => {
     // Add vote to character
     const charactersWithVote = characters.map((chara) =>
-      chara.image_id === card.image_id ? { ...chara, votes: chara.votes + 1 } : chara
+      chara.image_id === card.image_id
+        ? { ...chara, votes: chara.votes + 1 }
+        : chara
     );
     // Add pair to characters
     const newCharacters = charactersWithVote.map((chara) => {
@@ -47,7 +47,6 @@ const CardContainer = ({
   };
 
   const nextTurn = (unpaired) => {
-    // console.log(unpaired);
     let charactersCopy = characters;
 
     const first = unpaired[0];
@@ -58,8 +57,7 @@ const CardContainer = ({
     if (!opponent) {
       charactersCopy = charactersCopy.map((chara) =>
         chara.image_id === first.image_id
-          ? // ? { ...chara, rounds: chara.rounds + 1, votes: chara.votes + 1 }
-            { ...chara, rounds: chara.rounds + 1 }
+          ? { ...chara, rounds: chara.rounds + 1 }
           : chara
       );
       setCharacters(charactersCopy);
@@ -131,6 +129,15 @@ const CardContainer = ({
 };
 export default CardContainer;
 
+const cardFade = keyframes`
+  from {
+    transform: rotateX(-45deg);
+  }
+  to {
+    transform: rotateX(0deg);
+  }
+`;
+
 const StyledCardContainer = styled.div`
   max-width: 1000px;
   margin: 0 auto;
@@ -138,6 +145,12 @@ const StyledCardContainer = styled.div`
   display: flex;
   justify-content: center;
   gap: 3em;
+
+  div {
+    /* transform: rotateX(-180deg);
+    animation: ${cardFade} 500ms forwards; */
+    user-select: none;
+  }
 
   @media screen and (max-width: 530px) {
     flex-direction: column;
